@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.FrameLayout;
 
 
 import com.silho.ideo.clockwidget.R;
@@ -26,7 +27,9 @@ public class SettingsActivity extends AppCompatActivity {
                 }
             });
         }
-    }
 
+        SettingsFragment settingsFragment = new SettingsFragment();
+        getSupportFragmentManager().beginTransaction().add(R.id.container_frag, settingsFragment).commit();
+    }
 
 }

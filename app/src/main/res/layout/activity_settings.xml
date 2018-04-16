@@ -2,11 +2,10 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
+    android:id="@+id/activity_settings"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.silho.ideo.clockwidget.settings.SettingsActivity">
+    android:layout_height="match_parent">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/my_toolbar"
@@ -17,10 +16,9 @@
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
-    <fragment
-        android:id="@+id/activity_settings"
+    <FrameLayout
+        android:id="@+id/container_frag"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:name="com.silho.ideo.clockwidget.settings.SettingsFragment"/>
+        android:layout_height="match_parent"/>
 
 </LinearLayout>
