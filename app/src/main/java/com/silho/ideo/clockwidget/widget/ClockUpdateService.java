@@ -164,6 +164,9 @@ public class ClockUpdateService extends Service {
                 @Override
                 public void onResponse(Call<RootHours> call, Response<RootHours> response) {
                     mListDays = (ArrayList<ListHours>) response.body().getList();
+                    for(int id : AppWidgetManager.getInstance(ClockUpdateService.this).getAppWidgetIds(new ComponentName(ClockUpdateService.this, ClockAppWidget.class))){
+                        updateAppWidget(ClockUpdateService.this, AppWidgetManager.getInstance(ClockUpdateService.this), id);
+                    }
                 }
 
                 @Override
@@ -176,6 +179,9 @@ public class ClockUpdateService extends Service {
                 @Override
                 public void onResponse(Call<RootHours> call, Response<RootHours> response) {
                     mListDays = (ArrayList<ListHours>) response.body().getList();
+                    for(int id : AppWidgetManager.getInstance(ClockUpdateService.this).getAppWidgetIds(new ComponentName(ClockUpdateService.this, ClockAppWidget.class))) {
+                        updateAppWidget(ClockUpdateService.this, AppWidgetManager.getInstance(ClockUpdateService.this), id);
+                    }
                 }
 
                 @Override
@@ -195,6 +201,9 @@ public class ClockUpdateService extends Service {
                     mWeatherTemp = String.valueOf(Math.round(response.body().getMain().getTemp())) + "°";
                     mWeatherTempMinMax = String.valueOf(Math.round(response.body().getMain().getTempMin()) + "/"
                             + Math.round(response.body().getMain().getTempMax()) + "°");
+                    for(int id : AppWidgetManager.getInstance(ClockUpdateService.this).getAppWidgetIds(new ComponentName(ClockUpdateService.this, ClockAppWidget.class))) {
+                        updateAppWidget(ClockUpdateService.this, AppWidgetManager.getInstance(ClockUpdateService.this), id);
+                    }
 
                 }
 
@@ -211,6 +220,9 @@ public class ClockUpdateService extends Service {
                     mWeatherTemp = String.valueOf(Math.round(response.body().getMain().getTemp())) + "°";
                     mWeatherTempMinMax = String.valueOf(Math.round(response.body().getMain().getTempMin()) + "/"
                             + Math.round(response.body().getMain().getTempMax()) + "°");
+                    for(int id : AppWidgetManager.getInstance(ClockUpdateService.this).getAppWidgetIds(new ComponentName(ClockUpdateService.this, ClockAppWidget.class))) {
+                        updateAppWidget(ClockUpdateService.this, AppWidgetManager.getInstance(ClockUpdateService.this), id);
+                    }
                 }
 
                 @Override
@@ -291,7 +303,7 @@ public class ClockUpdateService extends Service {
                 PendingIntent.FLAG_UPDATE_CURRENT);
         remoteViews.setOnClickPendingIntent(R.id.dateAndTimeContainer, pendingIntent1);
 
-        Intent intentToForecast = new Intent(context, ClockAppWidget.class);
+        Intent intentToForecast = new Intent(context, ClockAppWidgetReceiver.class);
         intentToForecast.setAction(CLICKED);
         PendingIntent pi = PendingIntent.getBroadcast(context, 0, intentToForecast, PendingIntent.FLAG_UPDATE_CURRENT);
         remoteViews.setOnClickPendingIntent(R.id.buttonToForecast, pi);
@@ -331,7 +343,7 @@ public class ClockUpdateService extends Service {
                 PendingIntent.FLAG_UPDATE_CURRENT);
         remoteViews.setOnClickPendingIntent(R.id.dateAndTimeContainer, pendingIntent1);
 
-        Intent intentToForecast = new Intent(context, ClockAppWidget.class);
+        Intent intentToForecast = new Intent(context, ClockAppWidgetReceiver.class);
         intentToForecast.setAction(CLICKED);
         PendingIntent pi = PendingIntent.getBroadcast(context, 0, intentToForecast, PendingIntent.FLAG_UPDATE_CURRENT);
         remoteViews.setOnClickPendingIntent(R.id.buttonToForecast, pi);
@@ -388,7 +400,7 @@ public class ClockUpdateService extends Service {
         }
 
 
-        Intent intentToForecast = new Intent(context, ClockAppWidget.class);
+        Intent intentToForecast = new Intent(context, ClockAppWidgetReceiver.class);
         intentToForecast.setAction(CLICKED);
         PendingIntent pi = PendingIntent.getBroadcast(context, 0, intentToForecast, PendingIntent.FLAG_UPDATE_CURRENT);
         remoteViews.setOnClickPendingIntent(R.id.buttonToCurrent, pi);
@@ -435,7 +447,7 @@ public class ClockUpdateService extends Service {
         }
 
 
-        Intent intentToForecast = new Intent(context, ClockAppWidget.class);
+        Intent intentToForecast = new Intent(context, ClockAppWidgetReceiver.class);
         intentToForecast.setAction(CLICKED);
         PendingIntent pi = PendingIntent.getBroadcast(context, 0, intentToForecast, PendingIntent.FLAG_UPDATE_CURRENT);
         remoteViews.setOnClickPendingIntent(R.id.buttonToCurrent, pi);
@@ -472,7 +484,7 @@ public class ClockUpdateService extends Service {
         }
 
 
-        Intent intentToForecast = new Intent(context, ClockAppWidget.class);
+        Intent intentToForecast = new Intent(context, ClockAppWidgetReceiver.class);
         intentToForecast.setAction(CLICKED);
         PendingIntent pi = PendingIntent.getBroadcast(context, 0, intentToForecast, PendingIntent.FLAG_UPDATE_CURRENT);
         remoteViews.setOnClickPendingIntent(R.id.buttonToCurrent, pi);

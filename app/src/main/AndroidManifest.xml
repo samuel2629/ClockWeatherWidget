@@ -17,7 +17,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity android:name=".ui.MainActivity"
             android:launchMode="singleTop">
             <intent-filter>
@@ -34,7 +33,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.MainActivity"/>
         </activity>
-
         <receiver android:name=".widget.ClockAppWidget">
             <intent-filter>
                 <action android:name="android.intent.action.TIME_TICK"/>
@@ -50,7 +48,6 @@
                 <action android:name="com.silho.ideo.action.clicked"/>
             </intent-filter>
         </receiver>
-
         <service
             android:name=".widget.ClockUpdateService"
             android:exported="true">
@@ -58,7 +55,6 @@
                 <action android:name="com.silho.clockwidget.action.UPDATE"/>
             </intent-filter>
         </service>
-
     </application>
 
 </manifest>
