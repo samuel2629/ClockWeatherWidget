@@ -277,14 +277,14 @@ public class ClockUpdateService extends Service {
         String time = formatterTime.format(timeInMillis);
         String date = formatterDate.format(timeInMillis).toUpperCase();
 
-        remoteViews.setImageViewBitmap(R.id.appwidgetTimeTv, createBitmap(context, time, 150, "CaviarDreams", true));
+        remoteViews.setImageViewBitmap(R.id.appwidgetTimeTv, createBitmap(context, time, 125, "CaviarDreams", true));
         remoteViews.setImageViewBitmap(R.id.appwidgetDateTv, createBitmap(context, date, 35, "CaviarDreams", false));
 
         if (mWeatherTemp != null && mIcon != -1) {
 
-            remoteViews.setImageViewBitmap(R.id.appwidgetPlaceTv, createBitmap(context, mPlace, 40, "CaviarDreams", false));
-            remoteViews.setImageViewBitmap(R.id.appWidgetWeatherText, createBitmap(context, mWeatherTemp, 60, "CaviarDreams", false));
-            remoteViews.setImageViewBitmap(R.id.appWidgetMinMaxTemp, createBitmap(context, mWeatherTempMinMax, 35, "CaviarDreams", false));
+            remoteViews.setImageViewBitmap(R.id.appwidgetPlaceTv, createBitmap(context, mPlace, 55, "CaviarDreams", false));
+            remoteViews.setImageViewBitmap(R.id.appWidgetWeatherText, createBitmap(context, mWeatherTemp, 65, "CaviarDreams", false));
+            remoteViews.setImageViewBitmap(R.id.appWidgetMinMaxTemp, createBitmap(context, mWeatherTempMinMax, 40, "CaviarDreams", false));
             remoteViews.setImageViewResource(R.id.appWidgetIconIv, mIcon);
         }
 

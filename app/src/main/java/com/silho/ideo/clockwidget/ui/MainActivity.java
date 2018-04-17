@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         FontHelper.setCustomTypeface(mHumidityLabel);
 
 
-        myLocation = new MyLocation();
+
         mLocationResult = new MyLocation.LocationResult() {
             @Override
             public void gotLocation(Location location) {
@@ -121,12 +121,10 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         toolbarTitleTv.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/CaviarDreams_Bold.ttf"));
         toolbarTitleTv.setText("Weather");
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
-                    MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
         } else {
+            myLocation = new MyLocation();
             myLocation.getLocation(this, mLocationResult, 0);
         }
 
@@ -149,9 +147,9 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if(requestCode == MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION || requestCode == MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION){
+        if(requestCode == MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION){
+            myLocation = new MyLocation();
             myLocation.getLocation(MainActivity.this, mLocationResult,0);
-
         } else {
             Toast.makeText(this, R.string.permission_not_granted, Toast.LENGTH_SHORT).show();
         }
