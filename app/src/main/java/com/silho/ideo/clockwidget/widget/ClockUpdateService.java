@@ -1,6 +1,5 @@
 package com.silho.ideo.clockwidget.widget;
 
-import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.appwidget.AppWidgetManager;
@@ -32,8 +31,10 @@ import android.widget.RemoteViews;
 import android.widget.Toast;
 
 import com.silho.ideo.clockwidget.R;
+import com.silho.ideo.clockwidget.model.ListDays;
 import com.silho.ideo.clockwidget.model.ListHours;
 import com.silho.ideo.clockwidget.model.Root;
+import com.silho.ideo.clockwidget.model.RootDays;
 import com.silho.ideo.clockwidget.model.RootHours;
 import com.silho.ideo.clockwidget.retofitApi.WeatherService;
 import com.silho.ideo.clockwidget.ui.MainActivity;
@@ -51,7 +52,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.silho.ideo.clockwidget.widget.ClockAppWidgetReceiver.CLICKED;
-import static com.silho.ideo.clockwidget.widget.ClockAppWidgetReceiver.isClicked;
+import static com.silho.ideo.clockwidget.widget.ClockAppWidgetReceiver.hasBeenClickedOnce;
 
 /**
  * Created by Samuel on 13/04/2018.
@@ -67,7 +68,6 @@ public class ClockUpdateService extends Service {
     private static boolean isSmall = false;
     private static boolean isMedium = false;
     private static boolean isBig = false;
-
     private MyLocation myLocation;
     private int[] mAllWidgetIds;
 
@@ -85,8 +85,7 @@ public class ClockUpdateService extends Service {
         @Override
         public void onReceive(Context context, Intent intent) {
             for(int id : AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, ClockAppWidget.class))){
-                updateAppWidget(context, AppWidgetManager.getInstance(context), id);
-            }
+                updateAppWidget(context, AppWidgetManager.getInstance(context), id);}
         }
 
     };
@@ -192,6 +191,42 @@ public class ClockUpdateService extends Service {
         }
     }
 
+    private void getDailyWeather(double latitude, double longitude, final boolean isCelsius) {
+        if (isCelsius) {
+            WeatherService.getWeather().weatherDays(latitude, longitude, "metric").enqueue(new Callback<RootDays>() {
+                @Override
+                public void onResponse(Call<RootDays> call, Response<RootDays> response) {
+                    response.body();
+                    List<ListDays> days = response.body().getList();
+                    for(int id : AppWidgetManager.getInstance(ClockUpdateService.this).getAppWidgetIds(new ComponentName(ClockUpdateService.this, ClockAppWidget.class))) {
+                        updateAppWidget(ClockUpdateService.this, AppWidgetManager.getInstance(ClockUpdateService.this), id);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<RootDays> call, Throwable t) {
+                    Toast.makeText(ClockUpdateService.this, R.string.error_getting_weather, Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            WeatherService.getWeather().weatherDays(latitude, longitude, "imperial").enqueue(new Callback<RootDays>() {
+                @Override
+                public void onResponse(Call<RootDays> call, Response<RootDays> response) {
+                    response.body();
+                    List<ListDays> days = response.body().getList();
+                    for(int id : AppWidgetManager.getInstance(ClockUpdateService.this).getAppWidgetIds(new ComponentName(ClockUpdateService.this, ClockAppWidget.class))) {
+                        updateAppWidget(ClockUpdateService.this, AppWidgetManager.getInstance(ClockUpdateService.this), id);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<RootDays> call, Throwable t) {
+                    Toast.makeText(ClockUpdateService.this, R.string.error_getting_weather, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+
     private void getCurrentWeather(double latitude, double longitude, boolean isCelsius){
         if(isCelsius) {
             WeatherService.getWeather().weather(latitude, longitude, "metric").enqueue(new Callback<Root>() {
@@ -253,6 +288,8 @@ public class ClockUpdateService extends Service {
             remoteViews.setImageViewResource(R.id.appWidgetIconIv, mIcon);
         }
 
+        getForecast4_1(context, remoteViews);
+
         Intent intentMainActivity = new Intent(context, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0 , intentMainActivity,
                 PendingIntent.FLAG_UPDATE_CURRENT);
@@ -292,6 +329,8 @@ public class ClockUpdateService extends Service {
             remoteViews.setImageViewResource(R.id.appWidgetIconIv, mIcon);
 
         }
+
+        getForecast3_1(context, remoteViews);
 
         Intent intentMainActivity = new Intent(context, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0 , intentMainActivity,
@@ -333,6 +372,8 @@ public class ClockUpdateService extends Service {
 
         }
 
+        getForecast2_1(context, remoteViews);
+
         Intent intentMainActivity = new Intent(context, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0 , intentMainActivity,
                 PendingIntent.FLAG_UPDATE_CURRENT);
@@ -353,8 +394,7 @@ public class ClockUpdateService extends Service {
         return remoteViews;
     }
 
-    private static RemoteViews getLayoutForecastWeather4_1(Context context, AppWidgetManager appWidgetManager, int appWidgetId){
-        RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_forecast_weather_4_1);
+    private static void getForecast4_1(Context context, RemoteViews remoteViews){
 
         if(mListDays != null){
 
@@ -367,7 +407,7 @@ public class ClockUpdateService extends Service {
             String date6 = formatterDate.format(mListDays.get(5).getDt());
             String date7 = formatterDate.format(mListDays.get(6).getDt());
 
-            remoteViews.setImageViewBitmap(R.id.appwidgetDateTv, createBitmap(context, date1, 25, "CaviarDreams", false));
+            remoteViews.setImageViewBitmap(R.id.appwidgetDateTv0, createBitmap(context, date1, 25, "CaviarDreams", false));
             remoteViews.setImageViewBitmap(R.id.appwidgetDateTv1, createBitmap(context, date2, 25, "CaviarDreams", false));
             remoteViews.setImageViewBitmap(R.id.appwidgetDateTv2, createBitmap(context, date3, 25, "CaviarDreams", false));
             remoteViews.setImageViewBitmap(R.id.appwidgetDateTv3, createBitmap(context, date4, 25, "CaviarDreams", false));
@@ -375,7 +415,7 @@ public class ClockUpdateService extends Service {
             remoteViews.setImageViewBitmap(R.id.appwidgetDateTv5, createBitmap(context, date6, 25, "CaviarDreams", false));
             remoteViews.setImageViewBitmap(R.id.appwidgetDateTv6, createBitmap(context, date7, 25, "CaviarDreams", false));
 
-            remoteViews.setImageViewBitmap(R.id.appWidgetWeatherText, createBitmap(context, String.valueOf(Math.round(mListDays.get(0).getMain().getTempMin()) +  "° "
+            remoteViews.setImageViewBitmap(R.id.appWidgetWeatherText0, createBitmap(context, String.valueOf(Math.round(mListDays.get(0).getMain().getTempMin()) +  "° "
                     + Math.round(mListDays.get(0).getMain().getTempMax()) + "°"), 28, "CaviarDreams", false));
             remoteViews.setImageViewBitmap(R.id.appWidgetWeatherText1, createBitmap(context, String.valueOf(Math.round(mListDays.get(1).getMain().getTempMin()) +  "° "
                     + Math.round(mListDays.get(1).getMain().getTempMax()) + "°"), 28, "CaviarDreams", false));
@@ -390,29 +430,22 @@ public class ClockUpdateService extends Service {
             remoteViews.setImageViewBitmap(R.id.appWidgetWeatherText6, createBitmap(context, String.valueOf(Math.round(mListDays.get(6).getMain().getTempMin()) +  "° "
                     + Math.round(mListDays.get(6).getMain().getTempMax()) + "°"), 28, "CaviarDreams", false));
 
-            remoteViews.setImageViewResource(R.id.iconIv, mListDays.get(0).getWeather().get(0).getIconId(mListDays.get(0).getWeather().get(0).getIcon()));
-            remoteViews.setImageViewResource(R.id.iconIv, mListDays.get(1).getWeather().get(0).getIconId(mListDays.get(1).getWeather().get(0).getIcon()));
-            remoteViews.setImageViewResource(R.id.iconIv, mListDays.get(2).getWeather().get(0).getIconId(mListDays.get(2).getWeather().get(0).getIcon()));
-            remoteViews.setImageViewResource(R.id.iconIv, mListDays.get(3).getWeather().get(0).getIconId(mListDays.get(3).getWeather().get(0).getIcon()));
-            remoteViews.setImageViewResource(R.id.iconIv, mListDays.get(4).getWeather().get(0).getIconId(mListDays.get(4).getWeather().get(0).getIcon()));
-            remoteViews.setImageViewResource(R.id.iconIv, mListDays.get(5).getWeather().get(0).getIconId(mListDays.get(5).getWeather().get(0).getIcon()));
-            remoteViews.setImageViewResource(R.id.iconIv, mListDays.get(6).getWeather().get(0).getIconId(mListDays.get(6).getWeather().get(0).getIcon()));
+            remoteViews.setImageViewResource(R.id.appWidgetIconIv0, mListDays.get(0).getWeather().get(0).getIconId(mListDays.get(0).getWeather().get(0).getIcon()));
+            remoteViews.setImageViewResource(R.id.appWidgetIconIv1, mListDays.get(1).getWeather().get(0).getIconId(mListDays.get(1).getWeather().get(0).getIcon()));
+            remoteViews.setImageViewResource(R.id.appWidgetIconIv2, mListDays.get(2).getWeather().get(0).getIconId(mListDays.get(2).getWeather().get(0).getIcon()));
+            remoteViews.setImageViewResource(R.id.appWidgetIconIv3, mListDays.get(3).getWeather().get(0).getIconId(mListDays.get(3).getWeather().get(0).getIcon()));
+            remoteViews.setImageViewResource(R.id.appWidgetIconIv4, mListDays.get(4).getWeather().get(0).getIconId(mListDays.get(4).getWeather().get(0).getIcon()));
+            remoteViews.setImageViewResource(R.id.appWidgetIconIv5, mListDays.get(5).getWeather().get(0).getIconId(mListDays.get(5).getWeather().get(0).getIcon()));
+            remoteViews.setImageViewResource(R.id.appWidgetIconIv6, mListDays.get(6).getWeather().get(0).getIconId(mListDays.get(6).getWeather().get(0).getIcon()));
         }
-
 
         Intent intentToForecast = new Intent(context, ClockAppWidgetReceiver.class);
         intentToForecast.setAction(CLICKED);
         PendingIntent pi = PendingIntent.getBroadcast(context, 0, intentToForecast, PendingIntent.FLAG_UPDATE_CURRENT);
         remoteViews.setOnClickPendingIntent(R.id.buttonToCurrent, pi);
-
-        appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
-
-        return remoteViews;
     }
 
-    private static RemoteViews getLayoutForecastWeather3_1(Context context, AppWidgetManager appWidgetManager, int appWidgetId){
-        RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_forecast_weather_3_1);
-
+    private static void getForecast3_1(Context context, RemoteViews remoteViews){
         if(mListDays != null){
 
             SimpleDateFormat formatterDate = new SimpleDateFormat("EEE");
@@ -422,13 +455,13 @@ public class ClockUpdateService extends Service {
             String date4 = formatterDate.format(mListDays.get(3).getDt());
             String date5 = formatterDate.format(mListDays.get(4).getDt());
 
-            remoteViews.setImageViewBitmap(R.id.appwidgetDateTv, createBitmap(context, date1, 25, "CaviarDreams", false));
+            remoteViews.setImageViewBitmap(R.id.appwidgetDateTv0, createBitmap(context, date1, 25, "CaviarDreams", false));
             remoteViews.setImageViewBitmap(R.id.appwidgetDateTv1, createBitmap(context, date2, 25, "CaviarDreams", false));
             remoteViews.setImageViewBitmap(R.id.appwidgetDateTv2, createBitmap(context, date3, 25, "CaviarDreams", false));
             remoteViews.setImageViewBitmap(R.id.appwidgetDateTv3, createBitmap(context, date4, 25, "CaviarDreams", false));
             remoteViews.setImageViewBitmap(R.id.appwidgetDateTv4, createBitmap(context, date5, 25, "CaviarDreams", false));
 
-            remoteViews.setImageViewBitmap(R.id.appWidgetWeatherText, createBitmap(context, String.valueOf(Math.round(mListDays.get(0).getMain().getTempMin()) +  "° "
+            remoteViews.setImageViewBitmap(R.id.appWidgetWeatherText0, createBitmap(context, String.valueOf(Math.round(mListDays.get(0).getMain().getTempMin()) +  "° "
                     + Math.round(mListDays.get(0).getMain().getTempMax()) + "°"), 28, "CaviarDreams", false));
             remoteViews.setImageViewBitmap(R.id.appWidgetWeatherText1, createBitmap(context, String.valueOf(Math.round(mListDays.get(1).getMain().getTempMin()) +  "° "
                     + Math.round(mListDays.get(1).getMain().getTempMax()) + "°"), 28, "CaviarDreams", false));
@@ -439,11 +472,11 @@ public class ClockUpdateService extends Service {
             remoteViews.setImageViewBitmap(R.id.appWidgetWeatherText4, createBitmap(context, String.valueOf(Math.round(mListDays.get(4).getMain().getTempMin()) +  "° "
                     + Math.round(mListDays.get(4).getMain().getTempMax()) + "°"), 28, "CaviarDreams", false));
 
-            remoteViews.setImageViewResource(R.id.iconIv, mListDays.get(0).getWeather().get(0).getIconId(mListDays.get(0).getWeather().get(0).getIcon()));
-            remoteViews.setImageViewResource(R.id.iconIv, mListDays.get(1).getWeather().get(0).getIconId(mListDays.get(1).getWeather().get(0).getIcon()));
-            remoteViews.setImageViewResource(R.id.iconIv, mListDays.get(2).getWeather().get(0).getIconId(mListDays.get(2).getWeather().get(0).getIcon()));
-            remoteViews.setImageViewResource(R.id.iconIv, mListDays.get(3).getWeather().get(0).getIconId(mListDays.get(3).getWeather().get(0).getIcon()));
-            remoteViews.setImageViewResource(R.id.iconIv, mListDays.get(4).getWeather().get(0).getIconId(mListDays.get(4).getWeather().get(0).getIcon()));
+            remoteViews.setImageViewResource(R.id.appWidgetIconIv0, mListDays.get(0).getWeather().get(0).getIconId(mListDays.get(0).getWeather().get(0).getIcon()));
+            remoteViews.setImageViewResource(R.id.appWidgetIconIv1, mListDays.get(1).getWeather().get(0).getIconId(mListDays.get(1).getWeather().get(0).getIcon()));
+            remoteViews.setImageViewResource(R.id.appWidgetIconIv2, mListDays.get(2).getWeather().get(0).getIconId(mListDays.get(2).getWeather().get(0).getIcon()));
+            remoteViews.setImageViewResource(R.id.appWidgetIconIv3, mListDays.get(3).getWeather().get(0).getIconId(mListDays.get(3).getWeather().get(0).getIcon()));
+            remoteViews.setImageViewResource(R.id.appWidgetIconIv4, mListDays.get(4).getWeather().get(0).getIconId(mListDays.get(4).getWeather().get(0).getIcon()));
         }
 
 
@@ -451,14 +484,9 @@ public class ClockUpdateService extends Service {
         intentToForecast.setAction(CLICKED);
         PendingIntent pi = PendingIntent.getBroadcast(context, 0, intentToForecast, PendingIntent.FLAG_UPDATE_CURRENT);
         remoteViews.setOnClickPendingIntent(R.id.buttonToCurrent, pi);
-
-        appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
-
-        return remoteViews;
     }
 
-    private static RemoteViews getLayoutForecastWeather2_1(Context context, AppWidgetManager appWidgetManager, int appWidgetId){
-        RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_forecast_weather_2_1);
+    private static void getForecast2_1(Context context, RemoteViews remoteViews){
 
         if(mListDays != null){
 
@@ -467,20 +495,20 @@ public class ClockUpdateService extends Service {
             String date2 = formatterDate.format(mListDays.get(1).getDt());
             String date3 = formatterDate.format(mListDays.get(2).getDt());
 
-            remoteViews.setImageViewBitmap(R.id.appwidgetDateTv, createBitmap(context, date1, 25, "CaviarDreams", false));
+            remoteViews.setImageViewBitmap(R.id.appwidgetDateTv0, createBitmap(context, date1, 25, "CaviarDreams", false));
             remoteViews.setImageViewBitmap(R.id.appwidgetDateTv1, createBitmap(context, date2, 25, "CaviarDreams", false));
             remoteViews.setImageViewBitmap(R.id.appwidgetDateTv2, createBitmap(context, date3, 25, "CaviarDreams", false));
 
-            remoteViews.setImageViewBitmap(R.id.appWidgetWeatherText, createBitmap(context, String.valueOf(Math.round(mListDays.get(0).getMain().getTempMin()) +  "/"
+            remoteViews.setImageViewBitmap(R.id.appWidgetWeatherText0, createBitmap(context, String.valueOf(Math.round(mListDays.get(0).getMain().getTempMin()) +  "/"
                     + Math.round(mListDays.get(0).getMain().getTempMax()) + "°"), 28, "CaviarDreams", false));
             remoteViews.setImageViewBitmap(R.id.appWidgetWeatherText1, createBitmap(context, String.valueOf(Math.round(mListDays.get(1).getMain().getTempMin()) +  "/"
                     + Math.round(mListDays.get(1).getMain().getTempMax()) + "°"), 28, "CaviarDreams", false));
             remoteViews.setImageViewBitmap(R.id.appWidgetWeatherText2, createBitmap(context, String.valueOf(Math.round(mListDays.get(2).getMain().getTempMin()) +  "/"
                     + Math.round(mListDays.get(2).getMain().getTempMax()) + "°"), 28, "CaviarDreams", false));
 
-            remoteViews.setImageViewResource(R.id.iconIv, mListDays.get(0).getWeather().get(0).getIconId(mListDays.get(0).getWeather().get(0).getIcon()));
-            remoteViews.setImageViewResource(R.id.iconIv, mListDays.get(1).getWeather().get(0).getIconId(mListDays.get(1).getWeather().get(0).getIcon()));
-            remoteViews.setImageViewResource(R.id.iconIv, mListDays.get(2).getWeather().get(0).getIconId(mListDays.get(2).getWeather().get(0).getIcon()));
+            remoteViews.setImageViewResource(R.id.appWidgetIconIv0, mListDays.get(0).getWeather().get(0).getIconId(mListDays.get(0).getWeather().get(0).getIcon()));
+            remoteViews.setImageViewResource(R.id.appWidgetIconIv1, mListDays.get(1).getWeather().get(0).getIconId(mListDays.get(1).getWeather().get(0).getIcon()));
+            remoteViews.setImageViewResource(R.id.appWidgetIconIv2, mListDays.get(2).getWeather().get(0).getIconId(mListDays.get(2).getWeather().get(0).getIcon()));
         }
 
 
@@ -488,10 +516,6 @@ public class ClockUpdateService extends Service {
         intentToForecast.setAction(CLICKED);
         PendingIntent pi = PendingIntent.getBroadcast(context, 0, intentToForecast, PendingIntent.FLAG_UPDATE_CURRENT);
         remoteViews.setOnClickPendingIntent(R.id.buttonToCurrent, pi);
-
-        appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
-
-        return remoteViews;
     }
 
     private static Bitmap createBitmap(Context context, String text, int textSize, String font, boolean isShadowed){
@@ -504,7 +528,7 @@ public class ClockUpdateService extends Service {
         textPaint.setTextSize(textSize);
         textPaint.setTypeface(clock);
         if(isShadowed)
-            textPaint.setShadowLayer(7.5f, 2.5f, 2.5f, Color.BLACK);
+            textPaint.setShadowLayer(5.0f, 2.0f, 2.0f, Color.BLACK);
         int width = (int) textPaint.measureText(text);
 
         StaticLayout mTextLayout = new StaticLayout(text, textPaint, width, Layout.Alignment.ALIGN_CENTER, 1.0f, 0.0f, false);
@@ -528,23 +552,17 @@ public class ClockUpdateService extends Service {
     private static RemoteViews getGoodLayout(Context context, AppWidgetManager appWidgetManager, int appWidgetId){
         RemoteViews rv = null;
         if(isSmall){
-            if(isClicked){
-                rv = getLayoutForecastWeather2_1(context, appWidgetManager, appWidgetId);
-            } else {
                 rv = getLayoutCurrentWeather2_1(context, appWidgetManager, appWidgetId);
-            }
+                if(hasBeenClickedOnce)
+                    rv.showNext(R.id.scroll);
         } else if(isMedium){
-            if(isClicked){
-                rv = getLayoutForecastWeather3_1(context, appWidgetManager, appWidgetId);
-            } else {
                 rv = getLayoutCurrentWeather3_1(context, appWidgetManager, appWidgetId);
-            }
+                if(hasBeenClickedOnce)
+                    rv.showNext(R.id.scroll);
         } else if(isBig){
-            if(isClicked){
-                rv = getLayoutForecastWeather4_1(context, appWidgetManager, appWidgetId);
-            } else {
                 rv = getLayoutCurrentWeather4_1(context, appWidgetManager, appWidgetId);
-            }
+                if(hasBeenClickedOnce)
+                    rv.showNext(R.id.scroll);
         }
         return rv;
     }
@@ -552,7 +570,6 @@ public class ClockUpdateService extends Service {
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
         Bundle options = appWidgetManager.getAppWidgetOptions(appWidgetId);
         int width = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
-        int height = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
         RemoteViews rv;
         if (width > 100 && width < 200) {
             isSmall = true;
@@ -571,5 +588,6 @@ public class ClockUpdateService extends Service {
             rv = getGoodLayout(context, appWidgetManager, appWidgetId);
         }
         appWidgetManager.updateAppWidget(appWidgetId, rv);
+        hasBeenClickedOnce = false;
     }
 }

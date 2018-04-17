@@ -15,14 +15,12 @@ import static com.silho.ideo.clockwidget.widget.ClockUpdateService.updateAppWidg
 public class ClockAppWidgetReceiver extends BroadcastReceiver {
 
     public static String CLICKED = "com.silho.ideo.action.clicked";
-    public static boolean isClicked = false;
+    public static boolean hasBeenClickedOnce = false;
 
     @Override
     public void onReceive(Context context, Intent intent) {
         if(intent.getAction() != null && intent.getAction().equals(CLICKED)){
-            if(isClicked)
-                isClicked = false;
-            else isClicked = true;
+            hasBeenClickedOnce = true;
             for(int id : AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, ClockAppWidget.class))){
                 updateAppWidget(context, AppWidgetManager.getInstance(context), id);
             }

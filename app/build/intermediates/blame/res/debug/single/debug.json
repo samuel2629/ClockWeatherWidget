@@ -36,10 +36,6 @@
         "source": "C:\\Users\\Samuel\\AndroidStudioProjects\\ClockWidget\\app\\src\\main\\res\\mipmap-mdpi\\ic_weather_windy_variant_white_48dp.png"
     },
     {
-        "merged": "C:\\Users\\Samuel\\AndroidStudioProjects\\ClockWidget\\app\\build\\intermediates\\res\\merged\\debug\\layout_widget_forecast_weather_4_2.xml.flat",
-        "source": "C:\\Users\\Samuel\\AndroidStudioProjects\\ClockWidget\\app\\src\\main\\res\\layout\\widget_forecast_weather_4_2.xml"
-    },
-    {
         "merged": "C:\\Users\\Samuel\\AndroidStudioProjects\\ClockWidget\\app\\build\\intermediates\\res\\merged\\debug\\layout_preference_recyclerview.xml.flat",
         "source": "C:\\Users\\Samuel\\.gradle\\caches\\transforms-1\\files-1.1\\preference-v7-26.1.0.aar\\6dcfa15c2f8eed41891ac42ba6273b71\\res\\layout\\preference_recyclerview.xml"
     },
@@ -62,10 +58,6 @@
     {
         "merged": "C:\\Users\\Samuel\\AndroidStudioProjects\\ClockWidget\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi_weather_partlycloudy.png.flat",
         "source": "C:\\Users\\Samuel\\AndroidStudioProjects\\ClockWidget\\app\\build\\generated\\res\\pngs\\debug\\drawable-xxxhdpi\\weather_partlycloudy.png"
-    },
-    {
-        "merged": "C:\\Users\\Samuel\\AndroidStudioProjects\\ClockWidget\\app\\build\\intermediates\\res\\merged\\debug\\layout_lw42.xml.flat",
-        "source": "C:\\Users\\Samuel\\AndroidStudioProjects\\ClockWidget\\app\\src\\main\\res\\layout\\lw42.xml"
     },
     {
         "merged": "C:\\Users\\Samuel\\AndroidStudioProjects\\ClockWidget\\app\\build\\intermediates\\res\\merged\\debug\\anim_abc_popup_enter.xml.flat",
@@ -270,6 +262,10 @@
     {
         "merged": "C:\\Users\\Samuel\\AndroidStudioProjects\\ClockWidget\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi_weather_rainy.png.flat",
         "source": "C:\\Users\\Samuel\\AndroidStudioProjects\\ClockWidget\\app\\build\\generated\\res\\pngs\\debug\\drawable-xxhdpi\\weather_rainy.png"
+    },
+    {
+        "merged": "C:\\Users\\Samuel\\AndroidStudioProjects\\ClockWidget\\app\\build\\intermediates\\res\\merged\\debug\\anim_slide_out.xml.flat",
+        "source": "C:\\Users\\Samuel\\AndroidStudioProjects\\ClockWidget\\app\\src\\main\\res\\anim\\slide_out.xml"
     },
     {
         "merged": "C:\\Users\\Samuel\\AndroidStudioProjects\\ClockWidget\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi-v4_abc_textfield_search_activated_mtrl_alpha.9.png.flat",
@@ -1400,6 +1396,10 @@
         "source": "C:\\Users\\Samuel\\AndroidStudioProjects\\ClockWidget\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_weather_rainy_white_24dp.png"
     },
     {
+        "merged": "C:\\Users\\Samuel\\AndroidStudioProjects\\ClockWidget\\app\\build\\intermediates\\res\\merged\\debug\\anim_slide_in.xml.flat",
+        "source": "C:\\Users\\Samuel\\AndroidStudioProjects\\ClockWidget\\app\\src\\main\\res\\anim\\slide_in.xml"
+    },
+    {
         "merged": "C:\\Users\\Samuel\\AndroidStudioProjects\\ClockWidget\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxxhdpi_ic_weather_fog_white_24dp.png.flat",
         "source": "C:\\Users\\Samuel\\AndroidStudioProjects\\ClockWidget\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_weather_fog_white_24dp.png"
     },
@@ -1560,24 +1560,12 @@
         "source": "C:\\Users\\Samuel\\AndroidStudioProjects\\ClockWidget\\app\\build\\generated\\res\\pngs\\debug\\drawable-anydpi-v21\\weather_snowy.xml"
     },
     {
-        "merged": "C:\\Users\\Samuel\\AndroidStudioProjects\\ClockWidget\\app\\build\\intermediates\\res\\merged\\debug\\layout_widget_forecast_weather_3_1.xml.flat",
-        "source": "C:\\Users\\Samuel\\AndroidStudioProjects\\ClockWidget\\app\\src\\main\\res\\layout\\widget_forecast_weather_3_1.xml"
-    },
-    {
         "merged": "C:\\Users\\Samuel\\AndroidStudioProjects\\ClockWidget\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi-v4_abc_scrubber_control_to_pressed_mtrl_000.png.flat",
         "source": "C:\\Users\\Samuel\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-26.1.0.aar\\f4ace0dda0a899281a55b7d1dbf60e2c\\res\\drawable-xxhdpi-v4\\abc_scrubber_control_to_pressed_mtrl_000.png"
     },
     {
         "merged": "C:\\Users\\Samuel\\AndroidStudioProjects\\ClockWidget\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi_ic_settings_black_24dp.png.flat",
         "source": "C:\\Users\\Samuel\\AndroidStudioProjects\\ClockWidget\\app\\build\\generated\\res\\pngs\\debug\\drawable-xhdpi\\ic_settings_black_24dp.png"
-    },
-    {
-        "merged": "C:\\Users\\Samuel\\AndroidStudioProjects\\ClockWidget\\app\\build\\intermediates\\res\\merged\\debug\\layout_widget_forecast_weather_2_1.xml.flat",
-        "source": "C:\\Users\\Samuel\\AndroidStudioProjects\\ClockWidget\\app\\src\\main\\res\\layout\\widget_forecast_weather_2_1.xml"
-    },
-    {
-        "merged": "C:\\Users\\Samuel\\AndroidStudioProjects\\ClockWidget\\app\\build\\intermediates\\res\\merged\\debug\\layout_widget_forecast_weather_4_1.xml.flat",
-        "source": "C:\\Users\\Samuel\\AndroidStudioProjects\\ClockWidget\\app\\src\\main\\res\\layout\\widget_forecast_weather_4_1.xml"
     },
     {
         "merged": "C:\\Users\\Samuel\\AndroidStudioProjects\\ClockWidget\\app\\build\\intermediates\\res\\merged\\debug\\drawable-ldrtl-xxxhdpi-v17_abc_spinner_mtrl_am_alpha.9.png.flat",

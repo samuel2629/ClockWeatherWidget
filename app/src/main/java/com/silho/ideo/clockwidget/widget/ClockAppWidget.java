@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import static com.silho.ideo.clockwidget.widget.ClockAppWidgetReceiver.hasBeenClickedOnce;
 import static com.silho.ideo.clockwidget.widget.ClockUpdateService.updateAppWidget;
 
 public class ClockAppWidget extends AppWidgetProvider {
@@ -27,7 +28,6 @@ public class ClockAppWidget extends AppWidgetProvider {
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, allWidgetIds);
         context.startService(intent);
     }
-
 
     @Override
     public void onEnabled(Context context) {
